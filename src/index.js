@@ -3,13 +3,13 @@ import simplePubSub from 'simple-pub-sub';
 
 // Input Component
 const Input = React.createClass({
-    getInitialState: function() {
+    getInitialState() {
         return {
             value: ''
         };
     },
 
-    onChange: function(e) {
+    onChange(e) {
         const val = e.target.value;
 
         this.setState({
@@ -19,7 +19,7 @@ const Input = React.createClass({
         this.props.changeHandler(val);
     },
 
-    render: function() {
+    render() {
         return React.createElement('input', {
             onkeyup: this.onChange.bind(this)
         });
@@ -28,14 +28,14 @@ const Input = React.createClass({
 
 // Button Component
 const Button = React.createClass({
-    getInitialState: function() {
+    getInitialState() {
         return {
             text: 'ADD',
             num: 0
         };
     },
 
-    clickHandler: function(e) {
+    clickHandler(e) {
         this.props.add();
 
         const num = ++this.state.num;
@@ -46,7 +46,7 @@ const Button = React.createClass({
         });
     },
 
-    render: function() {
+    render() {
         return React.createElement('button', {
             onclick: this.clickHandler.bind(this)
         }, this.state.text);
@@ -56,13 +56,13 @@ const Button = React.createClass({
 
 // List Component
 const TodoList = React.createClass({
-    getInitialState: function() {
+    getInitialState() {
         return {
             items: []
         };
     },
 
-    add: function(text) {
+    add(text) {
         const nextItems = this.state.items.concat(text);
 
         this.setState({
@@ -70,7 +70,7 @@ const TodoList = React.createClass({
         });
     },
 
-    render: function() {
+    render() {
         const createItem = function(itemText) {
             return React.createElement('li', null, itemText);
         };
@@ -82,7 +82,7 @@ const TodoList = React.createClass({
         return React.createElement('ul', null, lists);
     },
 
-    componentDidMount: function() {
+    componentDidMount() {
         simplePubSub.on('add', function(text) {
             this.add(text);
         }.bind(this));
@@ -91,25 +91,25 @@ const TodoList = React.createClass({
 
 // Container Component
 const ContainerComponent = React.createClass({
-    getInitialState: function() {
+    getInitialState() {
         return {
             text: ''
         };
     },
 
     // 输入框输入值的事件变化
-    changeHandler: function(text) {
+    changeHandler(text) {
         // 记录下输入框的state
         this.setState({
             text: text
         });
     },
 
-    add: function() {
+    add() {
         simplePubSub.trigger('add', this.state.text);
     },
 
-    render: function() {
+    render() {
         // 输入框元素
         const input = React.createElement(Input, {
             changeHandler: this.changeHandler.bind(this)
